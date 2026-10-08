@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Survey Results - Climate Awareness</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+
+        /* =========================
+           PRINT / SAVE REPORT
+        ========================= */
+
+        .print-report-btn {
+            margin-top: 20px;
+            padding: 13px 25px;
+            border: none;
+            border-radius: 10px;
+            background: #159a8c;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .print-report-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+
+        /* =========================
+           LIVE ANALYSIS
+        ========================= */
+
+        .live-analysis {
+            margin-top: 30px;
+        }
+
+        .live-subtitle {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+
+        /* =========================
+           QUESTION ANALYSIS CARD
+        ========================= */
+
+        .question-result {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #e3eee8;
+            border-radius: 14px;
+            background: #fbfefc;
+        }
+
+        .question-result h3 {
+            margin: 0 0 15px 0;
+            color: #184d35;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+
+        .question-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            margin-right: 8px;
+            border-radius: 50%;
+            background: #159a8c;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            vertical-align: middle;
+        }
+
+        .answer-stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .yes-count {
+            color: #16834d;
+            font-weight: bold;
+        }
+
+        .no-count {
+            color: #c54b4b;
+            font-weight: bold;
+        }
+
+        .percentage-text {
+            color: #555;
+            font-weight: bold;
+        }
+
+        .progress-background {
+            width: 100%;
+            height: 10px;
+            background: #e7eeee;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-value {
+            height: 100%;
+            background: #159a8c;
+            border-radius: 20px;
+            transition: width 0.4s ease;
+        }
+
+
+        /* =========================
+           PRINT SETTINGS
+        ========================= */
+
+        @media print {
+
+            .navbar,
+            footer,
+            .print-report-btn {
+                display: none !important;
+            }
+
+            body {
+                background: white !important;
+            }
+
+            .survey-header {
+                margin-top: 20px;
+            }
+
+            .question-card,
+            .question-result {
+                box-shadow: none !important;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+
+            table {
+                page-break-inside: avoid;
+            }
+
+            .question-result {
+                border: 1px solid #ddd;
+            }
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .print-report-btn {
+                width: 100%;
+            }
+
+            .answer-stats {
+                flex-direction: column;
+                gap: 7px;
+            }
+
+            .question-result {
+                padding: 16px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🌍 Climate Awareness
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">
+                Home
+            </a>
+
+            <a href="/survey">
+                Survey
+            </a>
+
+            <a href="/results">
+                Results
+            </a>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         PAGE HEADER
+    ========================= -->
+
+    <section class="survey-header">
+
+        <p class="tag">
+            COMMUNITY ENGAGEMENT PROJECT
+        </p>
+
+        <h1>
+            Survey Results
+        </h1>
+
+        <p>
+            Analysis of community responses and climate awareness.
+        </p>
+
+        <button
+            class="print-report-btn"
+            onclick="window.print()">
+
+            📄 Print / Save Report
+
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         RESULTS CONTAINER
+    ========================= -->
+
+    <section class="results-container">
+
+
+        <!-- =========================
+             LIVE SUMMARY
+        ========================= -->
+
+        <div class="question-card">
+
+            <h2>
+                📊 Live Survey Summary
+            </h2>
+
+            <p class="live-subtitle">
+                Results are calculated automatically from submitted survey responses.
+            </p>
+
+
+            <div class="result-summary">
+
+
+                <div class="result-box">
+
+                    <h2>
+                        {{ live_data.total }}
+                    </h2>
+
+                    <p>
+                        Total Responses
+                    </p>
+
+                </div>
+
+
+                <div class="result-box">
+
+                    <h2>
+                        {{ live_data.climate_percent }}%
+                    </h2>
+
+                    <p>
+                        Climate Awareness
+                    </p>
+
+                </div>
+
+
+                <div class="result-box">
+
+                    <h2>
+                        {{ live_data.local_percent }}%
+                    </h2>
+
+                    <p>
+                        Know Local Impact
+                    </p>
+
+                </div>
+
+
+                <div class="result-box">
+
+                    <h2>
+                        {{ live_data.waste_percent }}%
+                    </h2>
+
+                    <p>
+                        Waste Segregation
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             INITIAL FINDINGS
+        ========================= -->
+
+        <div class="question-card">
+
+            <h2>
+                Initial Survey Findings
+            </h2>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Parameter
+                        </th>
+
+                        <th>
+                            Yes
+                        </th>
+
+                        <th>
+                            No
+                        </th>
+
+                        <th>
+                            Yes (%)
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <tr>
+
+                        <td>
+                            Heard about climate change
+                        </td>
+
+                        <td>
+                            15
+                        </td>
+
+                        <td>
+                            5
+                        </td>
+
+                        <td>
+                            75%
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Know local flooding/heat is linked to climate change
+                        </td>
+
+                        <td>
+                            8
+                        </td>
+
+                        <td>
+                            12
+                        </td>
+
+                        <td>
+                            40%
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Experienced extreme heat or flooding
+                        </td>
+
+                        <td>
+                            5
+                        </td>
+
+                        <td>
+                            15
+                        </td>
+
+                        <td>
+                            25%
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Practise waste segregation
+                        </td>
+
+                        <td>
+                            0
+                        </td>
+
+                        <td>
+                            20
+                        </td>
+
+                        <td>
+                            0%
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Know rainwater harvesting / energy saving
+                        </td>
+
+                        <td>
+                            6
+                        </td>
+
+                        <td>
+                            14
+                        </td>
+
+                        <td>
+                            30%
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =========================
+             BEFORE VS AFTER
+        ========================= -->
+
+        <div class="question-card">
+
+            <h2>
+                Before vs After Awareness Session
+            </h2>
+
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Parameter
+                        </th>
+
+                        <th>
+                            Before
+                        </th>
+
+                        <th>
+                            After
+                        </th>
+
+                        <th>
+                            Change
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <tr>
+
+                        <td>
+                            Heard about climate change
+                        </td>
+
+                        <td>
+                            75%
+                        </td>
+
+                        <td>
+                            75%
+                        </td>
+
+                        <td>
+                            0%
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Know local flooding/heat link
+                        </td>
+
+                        <td>
+                            40%
+                        </td>
+
+                        <td>
+                            75%
+                        </td>
+
+                        <td>
+                            +35%
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Practise waste segregation
+                        </td>
+
+                        <td>
+                            0%
+                        </td>
+
+                        <td>
+                            75%
+                        </td>
+
+                        <td>
+                            +75%
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>
+                            Know rainwater harvesting / energy saving
+                        </td>
+
+                        <td>
+                            30%
+                        </td>
+
+                        <td>
+                            75%
+                        </td>
+
+                        <td>
+                            +45%
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- =========================
+             ALL 20 QUESTIONS
+        ========================= -->
+
+        <div class="question-card live-analysis">
+
+            <h2>
+                📋 Live Analysis — All 20 Questions
+            </h2>
+
+            <p class="live-subtitle">
+                Each question below shows the number of Yes responses
+                and the percentage calculated from the live survey data.
+            </p>
+
+
+            {% set questions = [
+
+                "Are you aware of climate change?",
+
+                "Do you think climate change is affecting your local area?",
+
+                "Have you noticed changes in temperature in recent years?",
+
+                "Have you noticed changes in rainfall patterns?",
+
+                "Does waterlogging or flooding occur in your area?",
+
+                "Do you separate wet and dry waste at home?",
+
+                "Do you try to reduce the use of plastic bags?",
+
+                "Are you aware of rainwater harvesting?",
+
+                "Do you avoid unnecessary water wastage?",
+
+                "Do you try to save electricity at home?",
+
+                "Do you switch off lights and fans when they are not needed?",
+
+                "Do you use public transport or carpooling to reduce pollution?",
+
+                "Does your local area have enough trees and green spaces?",
+
+                "Have you ever participated in a tree plantation activity?",
+
+                "Do you think plastic pollution contributes to environmental problems?",
+
+                "Do you think burning waste is harmful to the environment?",
+
+                "Would you participate in future climate awareness programs?",
+
+                "Do you share climate awareness information with your family or friends?",
+
+                "Are you willing to change your daily habits to help reduce climate change?",
+
+                "Do you think the local community can work together to reduce climate change impacts?"
+
+            ] %}
+
+
+            {% for i in range(1, 21) %}
+
+                {% set yes_count = live_data.question_yes["q" ~ i] %}
+                {% set total = live_data.total %}
+
+                {% if total > 0 %}
+                    {% set yes_percent = ((yes_count / total) * 100) | round | int %}
+                {% else %}
+                    {% set yes_percent = 0 %}
+                {% endif %}
+
+                {% if total > 0 %}
+                    {% set no_count = total - yes_count %}
+                {% else %}
+                    {% set no_count = 0 %}
+                {% endif %}
+
+
+                <div class="question-result">
+
+
+                    <h3>
+
+                        <span class="question-number">
+                            {{ i }}
+                        </span>
+
+                        {{ questions[i - 1] }}
+
+                    </h3>
+
+
+                    <div class="answer-stats">
+
+                        <span class="yes-count">
+                            ✓ Yes: {{ yes_count }}
+                        </span>
+
+                        <span class="no-count">
+                            ✕ No: {{ no_count }}
+                        </span>
+
+                        <span class="percentage-text">
+                            {{ yes_percent }}% Yes
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress-background">
+
+                        <div
+                            class="progress-value"
+                            style="width: {{ yes_percent }}%;">
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+            {% endfor %}
+
+        </div>
+
+
+        <!-- =========================
+             INTERPRETATION
+        ========================= -->
+
+        <div class="question-card interpretation">
+
+            <h2>
+                Interpretation
+            </h2>
+
+
+            <p>
+                The live survey results above are calculated automatically
+                from the responses submitted through the Climate Awareness Survey.
+            </p>
+
+
+            <p>
+                The analysis provides a question-wise view of community
+                awareness, environmental practices and willingness to
+                participate in climate-related activities.
+            </p>
+
+
+            <p>
+                Higher Yes percentages indicate greater awareness or
+                participation for the corresponding survey question.
+            </p>
+
+
+            <p>
+                These results can be used to identify areas where additional
+                climate awareness activities may be useful.
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <p>
+            © 2026 Climate Awareness & Local Impact Project
+        </p>
+
+        <p>
+            Community Engagement Project
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

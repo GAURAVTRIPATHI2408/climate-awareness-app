@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Climate Awareness App</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5faf7;
+            color: #1f2933;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            background: #ffffff;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            color: #16834b;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #374151;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #16834b;
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 520px;
+            padding: 70px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 50px;
+            background: linear-gradient(
+                135deg,
+                #eefaf3,
+                #ffffff
+            );
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .tag {
+            color: #16834b;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: 58px;
+            line-height: 1.1;
+            color: #172b1f;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 span {
+            color: #16834b;
+        }
+
+        .description {
+            font-size: 18px;
+            line-height: 1.7;
+            color: #5b6770;
+            max-width: 600px;
+            margin-bottom: 32px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 14px 26px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn.primary {
+            background: #16834b;
+            color: white;
+        }
+
+        .btn.primary:hover {
+            background: #11683b;
+        }
+
+        .btn.secondary {
+            border: 2px solid #16834b;
+            color: #16834b;
+            background: white;
+        }
+
+        .btn.secondary:hover {
+            background: #16834b;
+            color: white;
+        }
+
+
+        /* =========================
+           HERO CARD
+        ========================= */
+
+        .hero-card {
+            width: 330px;
+            padding: 45px 30px;
+            background: white;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+        }
+
+        .earth {
+            font-size: 90px;
+            margin-bottom: 20px;
+        }
+
+        .hero-card h2 {
+            color: #172b1f;
+            margin-bottom: 12px;
+        }
+
+        .hero-card p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           ABOUT
+        ========================= */
+
+        .about {
+            padding: 70px 10%;
+            text-align: center;
+            background: white;
+        }
+
+        .about h2 {
+            font-size: 34px;
+            color: #172b1f;
+            margin-bottom: 20px;
+        }
+
+        .about p {
+            max-width: 850px;
+            margin: auto;
+            color: #5b6770;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+
+
+        /* =========================
+           PROJECT OBJECTIVES
+        ========================= */
+
+        .objectives {
+            padding: 70px 7%;
+            background: #f5faf7;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 34px;
+            color: #172b1f;
+            margin-bottom: 12px;
+        }
+
+        .section-title p {
+            color: #6b7280;
+        }
+
+        .objective-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+        }
+
+        .objective-card {
+            background: white;
+            padding: 30px 22px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        .objective-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .objective-icon {
+            font-size: 42px;
+            margin-bottom: 18px;
+        }
+
+        .objective-card h3 {
+            color: #172b1f;
+            margin-bottom: 12px;
+        }
+
+        .objective-card p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           FEATURES
+        ========================= */
+
+        .features {
+            padding: 70px 7%;
+            background: white;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+        }
+
+        .feature-card {
+            padding: 30px 22px;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+        }
+
+        .icon {
+            font-size: 42px;
+            margin-bottom: 18px;
+        }
+
+        .feature-card h3 {
+            color: #172b1f;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           CTA
+        ========================= */
+
+        .cta {
+            padding: 70px 20px;
+            text-align: center;
+            background: #16834b;
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            margin-bottom: 25px;
+            font-size: 17px;
+        }
+
+        .cta .btn {
+            background: white;
+            color: #16834b;
+        }
+
+        .cta .btn:hover {
+            background: #eefaf3;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #172b1f;
+            color: white;
+            text-align: center;
+            padding: 25px;
+            line-height: 1.8;
+        }
+
+        footer p {
+            margin: 3px 0;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 60px 5%;
+            }
+
+            .hero h1 {
+                font-size: 45px;
+            }
+
+            .description {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .buttons {
+                justify-content: center;
+            }
+
+            .objective-grid,
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-card {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 45px 20px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .description {
+                font-size: 16px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                display: block;
+            }
+
+            .objective-grid,
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .about {
+                padding: 55px 20px;
+            }
+
+            .objectives {
+                padding: 55px 20px;
+            }
+
+            .features {
+                padding: 55px 20px;
+            }
+
+            .cta h2 {
+                font-size: 28px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🌍 Climate Awareness
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+
+            <a href="/survey">Survey</a>
+
+            <a href="/results">Results</a>
+
+            <a href="/dashboard">Dashboard</a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         HERO SECTION
+    ========================= -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <p class="tag">
+                COMMUNITY ENGAGEMENT PROJECT
+            </p>
+
+            <h1>
+                Climate Change<br>
+                <span>Impact Analysis</span>
+            </h1>
+
+            <p class="description">
+                Understanding climate change and its local impact
+                through community awareness, survey and analysis.
+            </p>
+
+            <div class="buttons">
+
+                <a href="/survey" class="btn primary">
+                    Take Survey
+                </a>
+
+                <a href="/dashboard" class="btn secondary">
+                    View Dashboard
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="hero-card">
+
+            <div class="earth">
+                🌍
+            </div>
+
+            <h2>
+                Protect Our Environment
+            </h2>
+
+            <p>
+                Small actions can create meaningful
+                environmental change.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         ABOUT PROJECT
+    ========================= -->
+
+    <section class="about">
+
+        <h2>
+            About This Project
+        </h2>
+
+        <p>
+            This application is based on the Community Engagement Project
+            titled "Climate Change Impact Analysis at Local Level".
+            It focuses on climate awareness, local environmental problems,
+            waste segregation, rainwater harvesting and energy saving.
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================
+         PROJECT OBJECTIVES
+    ========================= -->
+
+    <section class="objectives">
+
+        <div class="section-title">
+
+            <h2>
+                Project Objectives
+            </h2>
+
+            <p>
+                Key goals of the Climate Awareness Project
+            </p>
+
+        </div>
+
+
+        <div class="objective-grid">
+
+
+            <div class="objective-card">
+
+                <div class="objective-icon">
+                    🌡️
+                </div>
+
+                <h3>
+                    Climate Awareness
+                </h3>
+
+                <p>
+                    Increase awareness about climate change
+                    and its effects on daily life.
+                </p>
+
+            </div>
+
+
+            <div class="objective-card">
+
+                <div class="objective-icon">
+                    🌱
+                </div>
+
+                <h3>
+                    Environmental Protection
+                </h3>
+
+                <p>
+                    Encourage environmentally responsible
+                    habits within the community.
+                </p>
+
+            </div>
+
+
+            <div class="objective-card">
+
+                <div class="objective-icon">
+                    ♻️
+                </div>
+
+                <h3>
+                    Sustainable Practices
+                </h3>
+
+                <p>
+                    Promote waste management, water conservation
+                    and energy-saving practices.
+                </p>
+
+            </div>
+
+
+            <div class="objective-card">
+
+                <div class="objective-icon">
+                    🤝
+                </div>
+
+                <h3>
+                    Community Participation
+                </h3>
+
+                <p>
+                    Encourage people to work together
+                    towards a greener environment.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         FEATURES
+    ========================= -->
+
+    <section class="features">
+
+
+        <div class="feature-card">
+
+            <div class="icon">
+                🌡️
+            </div>
+
+            <h3>
+                Climate Awareness
+            </h3>
+
+            <p>
+                Learn about climate change and
+                its local environmental impacts.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="icon">
+                📊
+            </div>
+
+            <h3>
+                Community Survey
+            </h3>
+
+            <p>
+                Collect and analyse community
+                responses through the survey.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="icon">
+                ♻️
+            </div>
+
+            <h3>
+                Sustainable Actions
+            </h3>
+
+            <p>
+                Learn about waste segregation,
+                water conservation and energy saving.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="icon">
+                🌳
+            </div>
+
+            <h3>
+                Green Community
+            </h3>
+
+            <p>
+                Encourage tree plantation and
+                environmental responsibility.
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =========================
+         CALL TO ACTION
+    ========================= -->
+
+    <section class="cta">
+
+        <h2>
+            Ready to Make a Difference?
+        </h2>
+
+        <p>
+            Participate in the climate awareness survey
+            and contribute to a greener community.
+        </p>
+
+        <a href="/survey" class="btn">
+            Start Survey
+        </a>
+
+    </section>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <p>
+            © 2026 Climate Awareness & Local Impact Project
+        </p>
+
+        <p>
+            Community Engagement Project
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>
