@@ -1,761 +1,346 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Climate Awareness Survey</title>
+    <title>Climate Change Impacts Analysis Survey</title>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: linear-gradient(135deg, #eef8f0, #ffffff);
-            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef8f0, #fff);
             color: #183b25;
         }
 
-        /* Navbar */
-        .navbar {
-            width: 100%;
+        nav {
             background: #146b3a;
             color: white;
-            padding: 16px 7%;
+            padding: 18px 6%;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        .brand {
-            font-size: 21px;
-            font-weight: bold;
-        }
-
-        .brand span {
-            margin-right: 7px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 22px;
-        }
-
-        .nav-links a {
+        nav a {
             color: white;
             text-decoration: none;
-            font-size: 14px;
-            transition: 0.2s;
+            margin-left: 12px;
         }
 
-        .nav-links a:hover {
-            opacity: 0.75;
-        }
-
-        /* Main */
-        .container {
+        main {
             width: 92%;
-            max-width: 850px;
-            margin: 45px auto;
+            max-width: 800px;
+            margin: 35px auto;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
+        h1 { color: #146b3a; text-align: center; }
+        .intro { text-align: center; line-height: 1.6; }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px #19573118;
+            border: 1px solid #e1eee5;
         }
 
-        .header h1 {
-            font-size: 34px;
-            color: #146b3a;
-            margin-bottom: 10px;
-        }
+        label { display: block; font-weight: bold; margin-bottom: 9px; }
 
-        .header p {
-            color: #607568;
-            font-size: 15px;
-        }
-
-        /* Progress */
-        .progress-area {
-            margin-bottom: 25px;
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #b8cdbd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 16px;
         }
 
         .progress-info {
             display: flex;
             justify-content: space-between;
-            font-size: 14px;
-            font-weight: bold;
-            color: #35724c;
             margin-bottom: 8px;
+            color: #35724c;
+            font-weight: bold;
         }
 
-        .progress-bar {
-            width: 100%;
+        .progress {
             height: 9px;
             background: #dcebe0;
-            border-radius: 20px;
+            border-radius: 10px;
             overflow: hidden;
         }
 
-        .progress-fill {
-            width: 5%;
+        #progressFill {
             height: 100%;
+            width: 0;
             background: #249653;
-            border-radius: 20px;
-            transition: width 0.3s ease;
+            transition: width .2s;
         }
 
-        /* Survey Card */
-        .survey-card {
-            background: white;
-            border-radius: 20px;
-            padding: 35px;
-            box-shadow: 0 12px 35px rgba(25, 87, 49, 0.12);
-            border: 1px solid #e1eee5;
-        }
-
-        .question-number {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: #dff3e5;
-            color: #146b3a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
+        #questionNumber {
+            color: #249653;
             font-weight: bold;
-            margin-bottom: 22px;
         }
 
-        .question {
-            font-size: 24px;
-            line-height: 1.45;
-            color: #183b25;
-            margin-bottom: 30px;
+        #questionText {
+            font-size: 23px;
+            line-height: 1.4;
+            margin: 18px 0 25px;
         }
 
-        /* Options */
         .options {
             display: flex;
-            gap: 18px;
+            gap: 15px;
         }
 
-        .option {
-            flex: 1;
-        }
-
-        .option input {
-            display: none;
-        }
+        .option { flex: 1; }
+        .option input { position: absolute; opacity: 0; }
 
         .option label {
-            display: block;
+            padding: 15px;
             text-align: center;
-            padding: 16px;
             border: 2px solid #d7e8dc;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
-            color: #35724c;
-            background: #fbfefc;
-            transition: 0.25s;
-        }
-
-        .option label:hover {
-            border-color: #249653;
-            background: #f0faf3;
         }
 
         .option input:checked + label {
             background: #249653;
-            border-color: #249653;
             color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(36, 150, 83, 0.25);
+            border-color: #249653;
         }
 
-        /* Navigation */
+        .option input:focus-visible + label {
+            outline: 3px solid #183b25;
+        }
+
         .navigation {
             display: flex;
             justify-content: space-between;
-            margin-top: 30px;
-            gap: 15px;
+            gap: 12px;
+            margin-top: 28px;
         }
 
         button {
-            border: none;
+            padding: 13px 20px;
+            border: 0;
+            border-radius: 9px;
             cursor: pointer;
-            border-radius: 10px;
-            padding: 13px 25px;
-            font-size: 15px;
             font-weight: bold;
-            transition: 0.25s;
+            font-size: 15px;
         }
 
-        .previous-btn {
-            background: #edf3ef;
-            color: #35724c;
-        }
+        #previousBtn { background: #edf3ef; color: #35724c; }
+        #nextBtn, #submitBtn { background: #146b3a; color: white; }
+        #submitBtn[hidden], #nextBtn[hidden] { display: none; }
 
-        .previous-btn:hover {
-            background: #dce9df;
-        }
-
-        .next-btn,
-        .submit-btn {
-            background: #146b3a;
-            color: white;
-        }
-
-        .next-btn:hover,
-        .submit-btn:hover {
-            background: #0e552d;
-            transform: translateY(-1px);
-        }
-
-        .submit-btn {
-            display: none;
-        }
-
-        /* Mobile */
-        @media (max-width: 600px) {
-
-            .navbar {
-                padding: 14px 5%;
-            }
-
-            .brand {
-                font-size: 17px;
-            }
-
-            .nav-links {
-                gap: 10px;
-            }
-
-            .nav-links a {
-                font-size: 12px;
-            }
-
-            .container {
-                width: 94%;
-                margin: 30px auto;
-            }
-
-            .header h1 {
-                font-size: 27px;
-            }
-
-            .survey-card {
-                padding: 25px 20px;
-                border-radius: 16px;
-            }
-
-            .question {
-                font-size: 20px;
-            }
-
-            .options {
-                flex-direction: column;
-            }
-
-            .navigation button {
-                padding: 12px 18px;
-            }
+        @media (max-width: 550px) {
+            .card { padding: 20px; }
+            #questionText { font-size: 20px; }
+            .options { flex-direction: column; }
         }
     </style>
 </head>
 
 <body>
-
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="brand">
-            <span>🌍</span> Climate Awareness
-        </div>
-
-        <div class="nav-links">
+    <nav>
+        <strong>🌍 Climate Awareness</strong>
+        <div>
             <a href="/">Home</a>
-            <a href="/results">Results</a>
-            <a href="/dashboard">Dashboard</a>
+            <a href="/admin-login">Admin</a>
         </div>
     </nav>
 
+    <main>
+        <h1>Climate Change Impacts Analysis</h1>
+        <p class="intro">
+            Please answer this survey to help us understand climate
+            awareness and environmental impacts in your local community.
+        </p>
 
-    <!-- Main Content -->
-    <main class="container">
+        <form action="{{ url_for('submit_survey') }}"
+              method="POST" id="surveyForm">
 
-        <div class="header">
-            <h1>Climate Awareness Survey</h1>
-            <p>
-                Help us understand climate awareness and environmental practices
-                in the local community.
-            </p>
-        </div>
+            <section class="card">
+                <h2>Respondent Details</h2>
 
+                <label for="respondent_name">What is your name?</label>
+                <input type="text"
+                       id="respondent_name"
+                       name="respondent_name"
+                       maxlength="100"
+                       autocomplete="name"
+                       placeholder="Enter your name"
+                       required>
 
-        <!-- Progress -->
-        <div class="progress-area">
-            <div class="progress-info">
-                <span id="progressText">Question 1 of 20</span>
-                <span id="percentage">5%</span>
-            </div>
+                <label for="respondent_age">What is your age?</label>
+                <input type="number"
+                       id="respondent_age"
+                       name="respondent_age"
+                       min="1"
+                       max="120"
+                       step="1"
+                       placeholder="Enter your age"
+                       required>
+            </section>
 
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-        </div>
-
-
-        <!-- Survey Form -->
-        <form action="/submit-survey" method="POST" id="surveyForm">
-
-            <div class="survey-card">
-
-                <div class="question-number" id="questionNumber">
-                    01
+            <section class="card">
+                <div class="progress-info">
+                    <span id="progressText">Question 1 of 20</span>
+                    <span id="percentage">5%</span>
+                </div>
+                <div class="progress">
+                    <div id="progressFill"></div>
                 </div>
 
-                <div class="question" id="questionText">
-                    Are you aware of climate change?
-                </div>
+                <div id="questionNumber">Question 01</div>
+                <div id="questionText"></div>
+                <div class="options" id="optionsContainer"></div>
 
-
-                <!-- Options -->
-                <div class="options">
-
-                    <div class="option">
-                        <input
-                            type="radio"
-                            name="q1"
-                            value="Yes"
-                            id="q1yes"
-                        >
-
-                        <label for="q1yes">
-                            ✓ Yes
-                        </label>
-                    </div>
-
-
-                    <div class="option">
-                        <input
-                            type="radio"
-                            name="q1"
-                            value="No"
-                            id="q1no"
-                        >
-
-                        <label for="q1no">
-                            ✕ No
-                        </label>
-                    </div>
-
-                </div>
-
-
-                <!-- Navigation -->
                 <div class="navigation">
-
-                    <button
-                        type="button"
-                        class="previous-btn"
-                        id="previousBtn"
-                        onclick="previousQuestion()"
-                        style="visibility: hidden;"
-                    >
+                    <button type="button" id="previousBtn" hidden>
                         ← Previous
                     </button>
-
-                    <button
-                        type="button"
-                        class="next-btn"
-                        id="nextBtn"
-                        onclick="nextQuestion()"
-                    >
+                    <button type="button" id="nextBtn">
                         Next →
                     </button>
-
-                    <button
-                        type="submit"
-                        class="submit-btn"
-                        id="submitBtn"
-                    >
+                    <button type="submit" id="submitBtn" hidden>
                         Submit Survey ✓
                     </button>
-
                 </div>
-
-            </div>
-
+            </section>
         </form>
-
     </main>
 
-
     <script>
-
-        /*
-         * 20 Climate Awareness Questions
-         */
         const questions = [
-
             "Are you aware of climate change?",
-
             "Do you think climate change is affecting your local area?",
-
             "Have you noticed changes in temperature in recent years?",
-
             "Have you noticed changes in rainfall patterns?",
-
             "Does waterlogging or flooding occur in your area?",
-
             "Do you separate wet and dry waste at home?",
-
             "Do you try to reduce the use of plastic bags?",
-
             "Are you aware of rainwater harvesting?",
-
             "Do you avoid unnecessary water wastage?",
-
             "Do you try to save electricity at home?",
-
             "Do you switch off lights and fans when they are not needed?",
-
             "Do you use public transport or carpooling to reduce pollution?",
-
             "Does your local area have enough trees and green spaces?",
-
             "Have you ever participated in a tree plantation activity?",
-
             "Do you think plastic pollution contributes to environmental problems?",
-
             "Do you think burning waste is harmful to the environment?",
-
             "Would you participate in future climate awareness programs?",
-
             "Do you share climate awareness information with your family or friends?",
-
             "Are you willing to change your daily habits to help reduce climate change?",
-
             "Do you think the local community can work together to reduce climate change impacts?"
-
         ];
 
-
+        const answers = Array(questions.length).fill("");
         let currentQuestion = 0;
 
+        const form = document.getElementById("surveyForm");
+        const questionText = document.getElementById("questionText");
+        const questionNumber = document.getElementById("questionNumber");
+        const optionsContainer = document.getElementById("optionsContainer");
+        const progressText = document.getElementById("progressText");
+        const percentage = document.getElementById("percentage");
+        const progressFill = document.getElementById("progressFill");
+        const previousBtn = document.getElementById("previousBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const submitBtn = document.getElementById("submitBtn");
 
-        /*
-         * Display Question
-         */
-        function showQuestion() {
-
-            const questionText =
-                document.getElementById("questionText");
-
-            const questionNumber =
-                document.getElementById("questionNumber");
-
-            const progressText =
-                document.getElementById("progressText");
-
-            const percentage =
-                document.getElementById("percentage");
-
-            const progressFill =
-                document.getElementById("progressFill");
-
-            const nextBtn =
-                document.getElementById("nextBtn");
-
-            const submitBtn =
-                document.getElementById("submitBtn");
-
-            const previousBtn =
-                document.getElementById("previousBtn");
-
-
-            /*
-             * Update question
-             */
-            questionText.textContent =
-                questions[currentQuestion];
+        function renderQuestion() {
+            const number = currentQuestion + 1;
 
             questionNumber.textContent =
-                String(currentQuestion + 1).padStart(2, "0");
+                `Question ${String(number).padStart(2, "0")}`;
+            questionText.textContent = questions[currentQuestion];
 
-
-            /*
-             * Progress
-             */
-            const progress =
-                Math.round(
-                    ((currentQuestion + 1) / questions.length) * 100
-                );
-
+            const progress = Math.round(number / questions.length * 100);
             progressText.textContent =
-                `Question ${currentQuestion + 1} of ${questions.length}`;
-
-            percentage.textContent =
-                `${progress}%`;
-
-            progressFill.style.width =
-                `${progress}%`;
-
-
-            /*
-             * Navigation
-             */
-            if (currentQuestion === 0) {
-
-                previousBtn.style.visibility =
-                    "hidden";
-
-            } else {
-
-                previousBtn.style.visibility =
-                    "visible";
-
-            }
-
-
-            if (currentQuestion === questions.length - 1) {
-
-                nextBtn.style.display =
-                    "none";
-
-                submitBtn.style.display =
-                    "block";
-
-            } else {
-
-                nextBtn.style.display =
-                    "block";
-
-                submitBtn.style.display =
-                    "none";
-
-            }
-
-
-            /*
-             * Update radio buttons
-             */
-            updateOptions();
-
-        }
-
-
-        /*
-         * Create Yes / No options
-         */
-        function updateOptions() {
-
-            const optionsContainer =
-                document.querySelector(".options");
-
-
-            const questionName =
-                `q${currentQuestion + 1}`;
-
-
-            const savedAnswer =
-                document.querySelector(
-                    `input[name="${questionName}"]:checked`
-                );
-
-
-            const currentAnswer =
-                savedAnswer ? savedAnswer.value : null;
-
-
-            optionsContainer.innerHTML = `
-
-                <div class="option">
-
-                    <input
-                        type="radio"
-                        name="${questionName}"
-                        value="Yes"
-                        id="${questionName}yes"
-                        ${currentAnswer === "Yes" ? "checked" : ""}
-                    >
-
-                    <label for="${questionName}yes">
-                        ✓ Yes
-                    </label>
-
-                </div>
-
-
-                <div class="option">
-
-                    <input
-                        type="radio"
-                        name="${questionName}"
-                        value="No"
-                        id="${questionName}no"
-                        ${currentAnswer === "No" ? "checked" : ""}
-                    >
-
-                    <label for="${questionName}no">
-                        ✕ No
-                    </label>
-
-                </div>
-            `;
-
-        }
-
-
-        /*
-         * Save current answer
-         */
-        function saveCurrentAnswer() {
-
-            const selected =
-                document.querySelector(
-                    `input[name="q${currentQuestion + 1}"]:checked`
-                );
-
-
-            if (selected) {
-
-                const hiddenInput =
-                    document.getElementById(
-                        `saved-q${currentQuestion + 1}`
-                    );
-
-
-                if (!hiddenInput) {
-
-                    const input =
-                        document.createElement("input");
-
-                    input.type = "hidden";
-
-                    input.name =
-                        `q${currentQuestion + 1}`;
-
-                    input.id =
-                        `saved-q${currentQuestion + 1}`;
-
-                    input.value =
-                        selected.value;
-
-                    document
-                        .getElementById("surveyForm")
-                        .appendChild(input);
-
-                } else {
-
-                    hiddenInput.value =
-                        selected.value;
-
-                }
-
-            }
-
-        }
-
-
-        /*
-         * Next Question
-         */
-        function nextQuestion() {
-
-            const selected =
-                document.querySelector(
-                    `input[name="q${currentQuestion + 1}"]:checked`
-                );
-
-
-            if (!selected) {
-
-                alert("Please select Yes or No before continuing.");
-
-                return;
-
-            }
-
-
-            saveCurrentAnswer();
-
-
-            if (currentQuestion < questions.length - 1) {
-
-                currentQuestion++;
-
-                showQuestion();
-
-            }
-
-        }
-
-
-        /*
-         * Previous Question
-         */
-        function previousQuestion() {
-
-            if (currentQuestion > 0) {
-
-                saveCurrentAnswer();
-
-                currentQuestion--;
-
-                showQuestion();
-
-            }
-
-        }
-
-
-        /*
-         * Form validation
-         */
-        document
-            .getElementById("surveyForm")
-            .addEventListener("submit", function(event) {
-
-                const selected =
-                    document.querySelector(
-                        `input[name="q${currentQuestion + 1}"]:checked`
-                    );
-
-
-                if (!selected) {
-
-                    event.preventDefault();
-
-                    alert(
-                        "Please select Yes or No before submitting the survey."
-                    );
-
-                    return;
-
-                }
-
-
-                saveCurrentAnswer();
-
+                `Question ${number} of ${questions.length}`;
+            percentage.textContent = `${progress}%`;
+            progressFill.style.width = `${progress}%`;
+
+            optionsContainer.replaceChildren();
+
+            ["Yes", "No"].forEach(answer => {
+                const wrapper = document.createElement("div");
+                wrapper.className = "option";
+
+                const radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = `q${number}`;
+                radio.id = `q${number}_${answer.toLowerCase()}`;
+                radio.value = answer;
+                radio.checked = answers[currentQuestion] === answer;
+
+                radio.addEventListener("change", () => {
+                    answers[currentQuestion] = answer;
+                });
+
+                const label = document.createElement("label");
+                label.htmlFor = radio.id;
+                label.textContent = answer === "Yes" ? "✓ Yes" : "✕ No";
+
+                wrapper.append(radio, label);
+                optionsContainer.appendChild(wrapper);
             });
 
+            previousBtn.hidden = currentQuestion === 0;
+            nextBtn.hidden = currentQuestion === questions.length - 1;
+            submitBtn.hidden = currentQuestion !== questions.length - 1;
+        }
 
-        /*
-         * Start Survey
-         */
-        showQuestion();
+        nextBtn.addEventListener("click", () => {
+            if (!answers[currentQuestion]) {
+                alert("Please select Yes or No before continuing.");
+                return;
+            }
 
+            currentQuestion++;
+            renderQuestion();
+        });
+
+        previousBtn.addEventListener("click", () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+            }
+        });
+
+        form.addEventListener("submit", event => {
+            if (!answers.every(answer => answer === "Yes" || answer === "No")) {
+                event.preventDefault();
+                const missingIndex = answers.findIndex(
+                    answer => answer !== "Yes" && answer !== "No"
+                );
+
+                if (missingIndex !== -1) {
+                    currentQuestion = missingIndex;
+                    renderQuestion();
+                    alert(`Please answer question ${missingIndex + 1}.`);
+                }
+                return;
+            }
+
+            // Create one hidden input for every saved answer.
+            for (let i = 0; i < answers.length; i++) {
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = `q${i + 1}`;
+                input.value = answers[i];
+                form.appendChild(input);
+            }
+        });
+
+        renderQuestion();
     </script>
-
 </body>
 </html>
-```

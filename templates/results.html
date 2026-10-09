@@ -626,7 +626,33 @@
 
         <div class="question-card live-analysis">
 
-            <h2>
+            <div class="question-card">
+    <h2>Survey Respondents</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Sr. No.</th>
+                <th>Name</th>
+                <th>Age</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for response in responses %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ response['respondent_name'] }}</td>
+                <td>{{ response['respondent_age'] }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="3">No responses found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
                 📋 Live Analysis — All 20 Questions
             </h2>
 

@@ -341,6 +341,35 @@
 
 
     <main class="dashboard-container">
+        <div class="question-card">
+    <h2>Survey Respondents</h2>
+
+    <div style="overflow-x: auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr. No.</th>
+                    <th>Name</th>
+                    <th>Age</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for response in dashboard_data.responses %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ response['respondent_name'] or 'Not provided' }}</td>
+                    <td>{{ response['respondent_age'] or 'Not provided' }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">No responses found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 
         <!-- ==================================
